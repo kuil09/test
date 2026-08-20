@@ -23,6 +23,8 @@ When `document.modelContext` is available the app registers:
 - `delete_node`
 - `focus_node`
 
+The implementation intentionally uses the current `document.modelContext` API rather than the deprecated `navigator.modelContext` entry point.
+
 WebMCP is experimental. For local testing, use Chrome 149+ and enable `chrome://flags/#enable-webmcp-testing`. Public availability follows the Chrome WebMCP origin-trial requirements while the API remains experimental.
 
 ## Development
