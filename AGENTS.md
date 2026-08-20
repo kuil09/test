@@ -10,10 +10,11 @@ Treat exact GitHub commit and PR state as durable source truth, preserve unrelat
 
 When this repository is used as a template, keep this entry point and add the project's own engineering instructions alongside it.
 
-## Todo web app engineering instructions
+## Mindmap web app engineering instructions
 
 - Runtime: Node.js 22 or newer.
 - The app is dependency-free vanilla HTML, CSS, and JavaScript modules under `src/`.
-- Keep application state logic in `src/todo-store.mjs` independently testable from the DOM.
+- Keep persistent mind-map state logic in `src/mindmap-store.mjs` independently testable from the DOM.
+- Keep WebMCP tool definitions in `src/webmcp.mjs`; use the current imperative `document.modelContext` API and degrade gracefully when unavailable.
 - Run `npm test` for unit tests and `npm run build` for the production build.
 - Build output belongs in `dist/` and must not be committed.

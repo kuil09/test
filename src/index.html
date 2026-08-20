@@ -1,55 +1,111 @@
 <!doctype html>
 <html lang="ko">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f3efe8" />
-    <title>오늘 할 일</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="WebMCP를 지원하는 로컬 우선 마인드맵 웹앱" />
+    <title>Orbit Mindmap</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="shell">
-      <section class="todo-card" aria-labelledby="page-title">
-        <header class="card-header">
-          <p class="eyebrow">TODAY</p>
-          <div>
-            <h1 id="page-title">오늘 할 일</h1>
-            <p class="subtitle">해야 할 일을 적고, 끝낸 일은 가볍게 지우세요.</p>
-          </div>
-        </header>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Orbit Mindmap 홈">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Orbit</span>
+        </a>
 
-        <form class="todo-form" data-todo-form>
-          <label class="sr-only" for="todo-input">새 할 일</label>
-          <input
-            id="todo-input"
-            data-todo-input
-            type="text"
-            maxlength="120"
-            autocomplete="off"
-            placeholder="무엇을 해야 하나요?"
-          />
-          <button type="submit">추가</button>
-        </form>
+        <label class="map-title-wrap">
+          <span class="sr-only">마인드맵 제목</span>
+          <input class="map-title" data-map-title value="Untitled map" maxlength="80" />
+        </label>
 
-        <div class="toolbar">
-          <div class="filters" aria-label="할 일 필터">
-            <button type="button" data-filter="all" aria-pressed="true">전체</button>
-            <button type="button" data-filter="active" aria-pressed="false">진행 중</button>
-            <button type="button" data-filter="completed" aria-pressed="false">완료</button>
+        <nav class="toolbar" aria-label="마인드맵 도구">
+          <button type="button" class="tool-button" data-action="new">새 맵</button>
+          <button type="button" class="tool-button primary" data-action="add">+ 자식 노드</button>
+          <button type="button" class="tool-button" data-action="arrange">정렬</button>
+          <button type="button" class="tool-button" data-action="fit">전체 보기</button>
+          <button type="button" class="tool-button" data-action="export">내보내기</button>
+          <button type="button" class="tool-button" data-action="import">가져오기</button>
+          <input type="file" accept="application/json,.json" data-import-input hidden />
+        </nav>
+      </header>
+
+      <section class="workspace">
+        <div class="canvas" data-canvas aria-label="마인드맵 캔버스">
+          <div class="canvas-grid" aria-hidden="true"></div>
+          <div class="world" data-world>
+            <svg class="edges" data-edges aria-hidden="true"></svg>
+            <div class="node-layer" data-node-layer></div>
           </div>
-          <span class="remaining" data-remaining aria-live="polite">0개 남음</span>
+
+          <div class="canvas-help" aria-hidden="true">
+            <span>드래그: 이동</span>
+            <span>휠: 확대/축소</span>
+            <span>Enter: 자식 추가</span>
+          </div>
+
+          <div class="zoom-controls" aria-label="확대/축소">
+            <button type="button" data-zoom="out" aria-label="축소">−</button>
+            <output data-zoom-label>100%</output>
+            <button type="button" data-zoom="in" aria-label="확대">+</button>
+          </div>
         </div>
 
-        <ul class="todo-list" data-todo-list aria-label="할 일 목록"></ul>
-        <p class="empty-state" data-empty-state>아직 할 일이 없습니다.</p>
+        <aside class="inspector" aria-label="선택한 노드 속성">
+          <div class="inspector-heading">
+            <div>
+              <p class="eyebrow">NODE</p>
+              <h2 data-inspector-title>선택된 노드</h2>
+            </div>
+            <span class="node-id" data-node-id>root</span>
+          </div>
 
-        <footer class="card-footer">
-          <span>브라우저에 자동 저장됩니다.</span>
-          <button class="clear-button" type="button" data-clear-completed hidden>완료 항목 지우기</button>
-        </footer>
+          <label class="field">
+            <span>텍스트</span>
+            <textarea rows="3" maxlength="160" data-node-text></textarea>
+          </label>
+
+          <label class="field">
+            <span>부모 노드</span>
+            <select data-parent-select></select>
+          </label>
+
+          <div class="coordinate-row">
+            <label class="field compact">
+              <span>X</span>
+              <input type="number" step="10" data-node-x />
+            </label>
+            <label class="field compact">
+              <span>Y</span>
+              <input type="number" step="10" data-node-y />
+            </label>
+          </div>
+
+          <div class="inspector-actions">
+            <button type="button" class="wide-button primary" data-action="add">자식 노드 추가</button>
+            <button type="button" class="wide-button danger" data-action="delete">선택 노드 삭제</button>
+          </div>
+
+          <section class="agent-card" aria-labelledby="agent-title">
+            <div class="agent-card-head">
+              <div>
+                <p class="eyebrow">AGENT INTERFACE</p>
+                <h3 id="agent-title">WebMCP</h3>
+              </div>
+              <span class="status-dot" data-webmcp-dot></span>
+            </div>
+            <p class="agent-status" data-webmcp-status>브라우저 기능 확인 중…</p>
+            <details>
+              <summary>노출된 도구</summary>
+              <ul class="tool-list" data-webmcp-tools></ul>
+            </details>
+          </section>
+        </aside>
       </section>
     </main>
 
+    <div class="toast" data-toast role="status" aria-live="polite" hidden></div>
     <script type="module" src="./app.mjs"></script>
   </body>
 </html>

@@ -1,24 +1,44 @@
-# Simple Todo Web App
+# Orbit Mindmap
 
-A dependency-free Todo application built with HTML, CSS, and JavaScript modules.
+A local-first mind-map web app with WebMCP support.
 
 ## Features
 
-- Add, complete, and delete tasks.
-- Filter by all, active, and completed tasks.
-- Clear completed tasks.
-- Persist tasks in browser `localStorage`.
-- Responsive and keyboard-accessible interface.
+- Add, edit, delete, drag, and reparent mind-map nodes
+- Pan, zoom, fit-to-view, and deterministic auto layout
+- Automatic browser `localStorage` persistence
+- JSON import/export
+- GitHub Pages deployment
+- Chrome WebMCP imperative API integration
+
+## WebMCP tools
+
+When `document.modelContext` is available the app registers:
+
+- `get_map`
+- `create_map`
+- `add_node`
+- `update_node`
+- `reparent_node`
+- `delete_node`
+- `focus_node`
+
+WebMCP is experimental. For local testing, use Chrome 149+ and enable `chrome://flags/#enable-webmcp-testing`. Public availability follows the Chrome WebMCP origin-trial requirements while the API remains experimental.
 
 ## Development
 
-Requires Node.js 22 or newer.
+Requires Node.js 22 or newer and has no runtime dependencies.
 
 ```bash
 npm test
 npm run build
+npm run check
 ```
 
-The production build is written to `dist/`. Serve that directory with any static web server.
+`dist/` is generated output and is not committed.
 
-The repository keeps the embedded Luna Chat Coder skill under `.agents/` for chat-based repository development.
+## Deployment
+
+Pushes to `main` run the Pages workflow, which tests, builds, and deploys the app.
+
+Live URL: `https://kuil09.github.io/test/`

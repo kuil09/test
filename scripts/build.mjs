@@ -4,7 +4,13 @@ import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const source = resolve(root, 'src');
 const output = resolve(root, 'dist');
-const requiredFiles = ['index.html', 'styles.css', 'app.mjs', 'todo-store.mjs'];
+const requiredFiles = [
+  'index.html',
+  'styles.css',
+  'app.mjs',
+  'mindmap-store.mjs',
+  'webmcp.mjs',
+];
 
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
