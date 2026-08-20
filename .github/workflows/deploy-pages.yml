@@ -43,29 +43,38 @@ jobs:
           path: dist
 
   deploy:
+    runs-on: ubuntu-latest
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
+  report:
+    if: always()
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - deploy
+    steps:
       - name: Report deployment status
-        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
-          DEPLOY_OUTCOME: ${{ steps.deployment.outcome }}
-          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
           REPOSITORY: ${{ github.repository }}
           COMMIT_SHA: ${{ github.sha }}
         run: |
-          if [ "$DEPLOY_OUTCOME" = "success" ]; then
+          if [ "$BUILD_RESULT" = "success" ] && [ "$DEPLOY_RESULT" = "success" ]; then
             payload=$(printf '{"state":"success","target_url":"%s","description":"GitHub Pages deployed","context":"pages/deploy"}' "$PAGE_URL")
           else
-            payload='{"state":"failure","description":"GitHub Pages deployment failed","context":"pages/deploy"}'
+            payload=$(printf '{"state":"failure","description":"Pages build=%s deploy=%s","context":"pages/deploy"}' "$BUILD_RESULT" "$DEPLOY_RESULT")
           fi
 
           curl --fail-with-body --silent --show-error \
