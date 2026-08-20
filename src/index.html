@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3efe8" />
+    <title>오늘 할 일</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="todo-card" aria-labelledby="page-title">
+        <header class="card-header">
+          <p class="eyebrow">TODAY</p>
+          <div>
+            <h1 id="page-title">오늘 할 일</h1>
+            <p class="subtitle">해야 할 일을 적고, 끝낸 일은 가볍게 지우세요.</p>
+          </div>
+        </header>
+
+        <form class="todo-form" data-todo-form>
+          <label class="sr-only" for="todo-input">새 할 일</label>
+          <input
+            id="todo-input"
+            data-todo-input
+            type="text"
+            maxlength="120"
+            autocomplete="off"
+            placeholder="무엇을 해야 하나요?"
+          />
+          <button type="submit">추가</button>
+        </form>
+
+        <div class="toolbar">
+          <div class="filters" aria-label="할 일 필터">
+            <button type="button" data-filter="all" aria-pressed="true">전체</button>
+            <button type="button" data-filter="active" aria-pressed="false">진행 중</button>
+            <button type="button" data-filter="completed" aria-pressed="false">완료</button>
+          </div>
+          <span class="remaining" data-remaining aria-live="polite">0개 남음</span>
+        </div>
+
+        <ul class="todo-list" data-todo-list aria-label="할 일 목록"></ul>
+        <p class="empty-state" data-empty-state>아직 할 일이 없습니다.</p>
+
+        <footer class="card-footer">
+          <span>브라우저에 자동 저장됩니다.</span>
+          <button class="clear-button" type="button" data-clear-completed hidden>완료 항목 지우기</button>
+        </footer>
+      </section>
+    </main>
+
+    <script type="module" src="./app.mjs"></script>
+  </body>
+</html>
